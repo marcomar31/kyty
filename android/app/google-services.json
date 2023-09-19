@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "582711573400",
+    "project_id": "kyty-marco-martinez",
+    "storage_bucket": "kyty-marco-martinez.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582711573400:android:2f622b00ae9f90e0ee09ed",
+        "android_client_info": {
+          "package_name": "org.marcomartinez.kyty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUpGtgIh9XaQCFjfbkwB38apFZiGOy7z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
