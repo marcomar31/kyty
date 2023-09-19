@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-class LoginView extends StatelessWidget {
+class RegisterView extends StatelessWidget {
 
   late BuildContext _context;
 
-  void onClickRegistrar() {
-    Navigator.of(_context).popAndPushNamed('/registerview');
+  void onCLickCancelar() {
+    Navigator.of(_context).popAndPushNamed('/loginview');
   }
 
-  void onClickAceptarLogin() {
+  void onClickAceptarRegister() {
 
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class LoginView extends StatelessWidget {
         ),
       ),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-        child: TextField(
+        child: TextFormField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Input Password',
@@ -35,20 +36,29 @@ class LoginView extends StatelessWidget {
           obscureText: true,
         ),
       ),
+      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Pasa id manco',
+          ),
+          obscureText: true,
+        ),
+      ),
 
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickAceptarLogin, child: Text("ACEPTAR")),
+        TextButton(onPressed: onClickAceptarRegister, child: Text("ACEPTAR")),
         ),
 
         Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickRegistrar, child: Text("REGISTRO")),
+        TextButton(onPressed: onCLickCancelar, child: Text("CANCELAR")),
         ),
       ],),
     ]);
 
     AppBar appBar = AppBar(
-      title: const Text("LOGIN"),
+      title: const Text("REGISTREISION"),
       centerTitle: true,
       shadowColor: Colors.blue,
       backgroundColor: Colors.greenAccent.withOpacity(0.4),
