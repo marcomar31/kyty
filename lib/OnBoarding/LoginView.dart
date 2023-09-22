@@ -1,15 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
 
   late BuildContext _context;
 
+  TextEditingController tecUsername = TextEditingController();
+  TextEditingController tecPassword = TextEditingController();
+
+  SnackBar snackBar = SnackBar(
+      content: Text('Se produjo un error al intentar logearse.')
+  );
+
   void onClickRegistrar() {
     Navigator.of(_context).popAndPushNamed('/registerview');
   }
 
-  void onClickAceptarLogin() {
-
+  void onClickAceptarLogin() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: tecUsername.text,
+          password: tecPassword.text,
+      );
+      Navigator.of(_context).popAndPushNamed('/homeview');
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(_context).showSnackBar(snackBar);
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override
@@ -20,6 +41,7 @@ class LoginView extends StatelessWidget {
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: TextField(
+          controller: tecUsername,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Input User',
@@ -27,7 +49,8 @@ class LoginView extends StatelessWidget {
         ),
       ),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-        child: TextField(
+        child: TextFormField(
+          controller: tecPassword,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Input Password',
