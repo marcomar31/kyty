@@ -19,8 +19,8 @@ class LoginView extends StatelessWidget {
   void onClickAceptarLogin() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: tecUsername.text,
-          password: tecPassword.text,
+        email: tecUsername.text,
+        password: tecPassword.text,
       );
       Navigator.of(_context).popAndPushNamed('/homeview');
     } on FirebaseAuthException catch (e) {
@@ -40,32 +40,34 @@ class LoginView extends StatelessWidget {
     Column columna = new Column(children: [
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-        child: TextField(
+        child: Flexible(child: TextField(
           controller: tecUsername,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Input User',
+            labelText: 'Username'
           ),
+        ),
         ),
       ),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-        child: TextFormField(
+        child: Flexible(child: TextFormField(
           controller: tecPassword,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Input Password',
+            labelText: 'Password'
           ),
           obscureText: true,
+        ),
         ),
       ),
 
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickAceptarLogin, child: Text("ACEPTAR")),
+        TextButton(onPressed: onClickAceptarLogin, child: Text("ACEPTAR")),
         ),
 
         Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickRegistrar, child: Text("REGISTRO")),
+        TextButton(onPressed: onClickRegistrar, child: Text("REGISTRO")),
         ),
       ],),
     ]);

@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'KytyApp.dart';
 import 'firebase_options.dart';
 
-void main() {
-  runApp(KytyApp());
-  initFB();
-}
-
-
-void initFB() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(KytyApp());
 }

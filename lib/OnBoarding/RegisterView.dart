@@ -18,25 +18,25 @@ class RegisterView extends StatelessWidget {
   }
 
   void onClickAceptarRegister() async {
-  if (passwordController.text == repasswordController.text) {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: usernameController.text,
-        password: passwordController.text,
-      );
-      Navigator.of(_context).popAndPushNamed('/loginview');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+    if (passwordController.text == repasswordController.text) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: usernameController.text,
+          password: passwordController.text,
+        );
+        Navigator.of(_context).popAndPushNamed('/loginview');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
+    } else {
+      ScaffoldMessenger.of(_context).showSnackBar(snackBar);
     }
-  } else {
-    ScaffoldMessenger.of(_context).showSnackBar(snackBar);
-  }
   }
 
 
@@ -47,32 +47,35 @@ class RegisterView extends StatelessWidget {
     Column columna = new Column(children: [
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-        child: TextField(
+        child: Flexible(child: TextField(
           controller: usernameController,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Input Username',
+            labelText: 'Username'
           ),
+        ),
         ),
       ),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-        child: TextFormField(
+        child: Flexible(child: TextFormField(
           controller: passwordController,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Input Password',
+            labelText: 'Password'
           ),
           obscureText: true,
         ),
+        ),
       ),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-        child: TextFormField(
+        child: Flexible(child: TextFormField(
           controller: repasswordController,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Repeat Password',
+            labelText: 'Repassword'
           ),
           obscureText: true,
+        ),
         ),
       ),
 
