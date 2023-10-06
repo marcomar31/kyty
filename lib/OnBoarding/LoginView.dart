@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kyty/FirestoreObjects/FbUsuario.dart';
 
 class LoginView extends StatelessWidget {
 
   late BuildContext _context;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   TextEditingController tecUsername = TextEditingController();
   TextEditingController tecPassword = TextEditingController();
@@ -22,6 +25,23 @@ class LoginView extends StatelessWidget {
         email: tecUsername.text,
         password: tecPassword.text,
       );
+      String uidUsuario = FirebaseAuth.instance.currentUser!.uid;
+
+      DocumentReference<FbUsuario> ref = db.collection("Usuarios")
+        .doc(uidUsuario)
+        .withConverter(fromFirestore: FbUsuario.fromFirestore,
+          toFirestore: (FbUsuario usuario, _) => usuario.toFirestore());
+
+      DocumentSnapshot<FbUsuario> docSnap = await ref.get();
+      FbUsuario usuario = docSnap.data()!;
+
+      if (usuario != null) {
+        print("El manin este se llama: "+usuario.nombre);
+        Navigator.of(_context).popAndPushNamed("/homeview");
+      } else {
+        Navigator.of(_context).popAndPushNamed("/perfilview");
+      }
+
       Navigator.of(_context).popAndPushNamed('/homeview');
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(_context).showSnackBar(snackBar);
@@ -37,14 +57,14 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     _context = context;
-    Column columna = new Column(children: [
+    return Scaffold(body: Column(children: [
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: Flexible(child: TextField(
           controller: tecUsername,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Username'
+              border: OutlineInputBorder(),
+              labelText: 'Username'
           ),
         ),
         ),
@@ -53,8 +73,8 @@ class LoginView extends StatelessWidget {
         child: Flexible(child: TextFormField(
           controller: tecPassword,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Password'
+              border: OutlineInputBorder(),
+              labelText: 'Password'
           ),
           obscureText: true,
         ),
@@ -70,21 +90,16 @@ class LoginView extends StatelessWidget {
         TextButton(onPressed: onClickRegistrar, child: Text("REGISTRO")),
         ),
       ],),
-    ]);
 
-    AppBar appBar = AppBar(
-      title: const Text("LOGIN"),
-      centerTitle: true,
-      shadowColor: Colors.blue,
-      backgroundColor: Colors.greenAccent.withOpacity(0.4),
-      automaticallyImplyLeading: false,
+    ]),
+        appBar: AppBar(
+          title: const Text("LOGIN"),
+          centerTitle: true,
+          shadowColor: Colors.blue,
+          backgroundColor: Colors.greenAccent.withOpacity(0.4),
+          automaticallyImplyLeading: false,
+        )
     );
-
-    Scaffold scaffold = Scaffold(body: columna,
-      backgroundColor: Colors.greenAccent,
-      appBar: appBar,);
-
-    return scaffold;
   }
 
 }
