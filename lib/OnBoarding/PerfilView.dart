@@ -81,7 +81,7 @@ class PerfilView extends StatelessWidget {
       if (edadUsuario <= 0) {
         ScaffoldMessenger.of(_context).showSnackBar(SnackBar(content: Text("Por favor, introduzca una edad positiva")));
       } else {
-        FbUsuario usuario = new FbUsuario(nombre: tecNombre.text, edad: edadUsuario, altura: 0);
+        FbUsuario usuario = new FbUsuario(nombre: tecNombre.text, edad: edadUsuario, altura: 0, colorPelo: '');
         bool excepcion = false;
         try {
           //UID del usuario que está logeado

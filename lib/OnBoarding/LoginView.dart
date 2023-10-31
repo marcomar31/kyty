@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kyty/FirestoreObjects/FbUsuario.dart';
+
+import '../Custom/BottomMenu.dart';
 
 class LoginView extends StatelessWidget {
 
@@ -33,16 +37,15 @@ class LoginView extends StatelessWidget {
           toFirestore: (FbUsuario usuario, _) => usuario.toFirestore());
 
       DocumentSnapshot<FbUsuario> docSnap = await ref.get();
-      FbUsuario usuario = docSnap.data()!;
-
-      if (usuario != null) {
-        print("El manin este se llama: "+usuario.nombre);
-        Navigator.of(_context).popAndPushNamed("/homeview");
+      if (docSnap.exists) {
+        FbUsuario usuario = docSnap.data()!;
+        if (usuario != null) {
+          print("El manin este se llama: "+usuario.nombre);
+          Navigator.of(_context).popAndPushNamed("/homeview");
+        }
       } else {
         Navigator.of(_context).popAndPushNamed("/perfilview");
       }
-
-      Navigator.of(_context).popAndPushNamed('/homeview');
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(_context).showSnackBar(snackBar);
       if (e.code == 'user-not-found') {
@@ -57,7 +60,8 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     _context = context;
-    return Scaffold(body: Column(children: [
+
+    Column columna = new Column(children: [
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
       Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: Flexible(child: TextField(
@@ -91,15 +95,27 @@ class LoginView extends StatelessWidget {
         ),
       ],),
 
-    ]),
-        appBar: AppBar(
-          title: const Text("LOGIN"),
-          centerTitle: true,
-          shadowColor: Colors.blue,
-          backgroundColor: Colors.greenAccent.withOpacity(0.4),
-          automaticallyImplyLeading: false,
-        )
+    ]);
+
+    AppBar appBar = new AppBar(
+      title: const Text("LOGIN"),
+      centerTitle: true,
+      shadowColor: Colors.blue,
+      backgroundColor: Colors.greenAccent.withOpacity(0.4),
+      automaticallyImplyLeading: false,
     );
+
+    return Scaffold(body: columna,
+      appBar: appBar,
+      bottomNavigationBar: BottomMenu(onBotonesClicked: onBottonMenuPressed),
+    );
+  }
+
+  @override
+  void onBottonMenuPressed(int indice) {
+    // TODO: implement onBottonMenuPressed
+    if(indice == 0)exit(0);
+    print("---------->>> LOGIN: "+indice.toString());
   }
 
 }
