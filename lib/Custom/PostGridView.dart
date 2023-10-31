@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../FirestoreObjects/FbPost.dart';
 
-class PostGridCellView extends StatelessWidget {
+class PostGridView extends StatelessWidget {
 
   final List<FbPost> post;
   final int iPosicion;
   final Function (int indice)? onItemListaClickedFunction;
 
-  const PostGridCellView({
+  const PostGridView({
     super.key,
     required this.post,
     required this.iPosicion,

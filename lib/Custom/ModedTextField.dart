@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class KTTextField extends StatelessWidget {
+class ModedTextField extends StatelessWidget {
 
   String hintText;
   TextEditingController tec;
@@ -9,7 +9,7 @@ class KTTextField extends StatelessWidget {
   double dPaddingV;
 
   // Constructor que acepta el hintText como parámetro
-  KTTextField({Key? key, this.hintText="",
+  ModedTextField({Key? key, this.hintText="",
     required this.tec,
     this.blIsPassword = false,
     this.dPaddingH = 60,

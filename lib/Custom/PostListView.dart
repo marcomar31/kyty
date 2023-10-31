@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PostCellView extends StatelessWidget {
+class PostListView extends StatelessWidget {
 
   final String sText;
   final double dFontSize;
   final int iPosicion;
   final Function(int indice) onItemListClickedFun;
 
-  const PostCellView({super.key,
+  const PostListView({super.key,
     required this.sText,
     required this.dFontSize,
     required this.iPosicion,

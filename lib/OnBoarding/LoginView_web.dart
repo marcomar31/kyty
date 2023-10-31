@@ -7,7 +7,7 @@ import 'package:kyty/FirestoreObjects/FbUsuario.dart';
 
 import '../Custom/BottomMenu.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView_web extends StatelessWidget {
 
   late BuildContext _context;
   FirebaseFirestore db = FirebaseFirestore.instance;

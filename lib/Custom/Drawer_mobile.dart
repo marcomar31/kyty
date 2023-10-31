@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DrawerClass extends StatelessWidget{
+class Drawer_mobile extends StatelessWidget{
 
   Function(int indice)? onItemTap;
 
-  DrawerClass({Key? key,required this.onItemTap
+  Drawer_mobile({Key? key,required this.onItemTap
   }) : super(key: key);
 
   @override

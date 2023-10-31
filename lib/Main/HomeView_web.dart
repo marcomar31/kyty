@@ -4,29 +4,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:kyty/Custom/DrawerClass.dart';
-import 'package:kyty/Custom/PostCellView.dart';
-import 'package:kyty/Custom/PostGridCellView.dart';
+import 'package:kyty/Custom/Drawer_mobile.dart';
+import 'package:kyty/Custom/PostListView.dart';
+import 'package:kyty/Custom/PostGridView.dart';
 import 'package:kyty/FirestoreObjects/FbPost.dart';
 import 'package:kyty/Singletone/DataHolder.dart';
 
 import '../Custom/BottomMenu.dart';
-import '../OnBoarding/LoginView.dart';
+import '../OnBoarding/LoginView_web.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView_web extends StatefulWidget {
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _HomeView_webState createState() => _HomeView_webState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeView_webState extends State<HomeView_web> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final List<FbPost> posts = [];
   bool blIsList = false;
   late BottomMenu bottomMenu;
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
-    return PostCellView(sText: posts[index].titulo,
-        dFontSize: 20, iPosicion: index, onItemListClickedFun: onItemListClicked,);
+    return PostListView(sText: posts[index].titulo,
+        dFontSize: 20, iPosicion: index, onItemListClickedFun: onClickItemList,);
   }
 
   Widget creadorDeSeparadorLista(BuildContext context, int index) {
@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget? creadorDeItemMatriz(BuildContext context, int index){
-    return PostGridCellView(post: posts, iPosicion: index, onItemListaClickedFunction: onItemListClicked,);
+    return PostGridView(post: posts, iPosicion: index, onItemListaClickedFunction: onClickItemList,);
   }
 
   Widget? celdasOLista(bool isList) {
@@ -74,13 +74,13 @@ class _HomeViewState extends State<HomeView> {
     Navigator.of(context).popAndPushNamed('/loginview');
   }
 
-  void onItemListClicked(int index) {
+  void onClickItemList(int index) {
     DataHolder().selectedPost = posts[index];
     DataHolder().saveSelectedPostInCache();
     Navigator.of(context).pushNamed("/postview");
   }
 
-  void onBottonMenuPressed(int indice) {
+  void onClickBottonMenu(int indice) {
     // TODO: implement onBottonMenuPressed
     setState(() {
       if(indice == 0){
@@ -95,26 +95,19 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  //Mostrar menú vertical
   void fHomeViewDrawerOnTap(int indice){
     if (indice == 0) {
 
     } else if(indice==1){
       FirebaseAuth.instance.signOut();
       Navigator.of(context).pushAndRemoveUntil (
-        MaterialPageRoute (builder: (BuildContext context) =>  LoginView()),
+        MaterialPageRoute (builder: (BuildContext context) =>  LoginView_web()),
         ModalRoute.withName('/loginview'),
       );
     } else if(indice==2){
       exit(0);
     }
-  }
-
-  @override
-  void initState() {
-    descargarPosts();
-    super.initState();
-    loadGeoLocator();
-    //editarBotones();
   }
 
   void loadGeoLocator() async {
@@ -124,14 +117,21 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  void initState() {
+    descargarPosts();
+    super.initState();
+    loadGeoLocator();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(appBar:
       AppBar(title: Text('KYTY'), backgroundColor: Color.fromRGBO(37, 77, 152, 1.0)), body:
       Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
         Center(child: celdasOLista(blIsList)),
       ),
-      bottomNavigationBar: BottomMenu(onBotonesClicked: this.onBottonMenuPressed),
-      drawer: DrawerClass(onItemTap: fHomeViewDrawerOnTap),
+      bottomNavigationBar: BottomMenu(onBotonesClicked: this.onClickBottonMenu),
+      drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed("/postcreateview");
@@ -142,5 +142,4 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: Color.fromRGBO(49, 101, 203, 1.0),
     );
   }
-
 }

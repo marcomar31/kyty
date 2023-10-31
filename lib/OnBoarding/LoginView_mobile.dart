@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Custom/KTTextField.dart';
+import '../Custom/ModedTextField.dart';
 
-class PhoneLoginView extends StatefulWidget {
+class LoginView_mobile extends StatefulWidget {
   @override
-  State<PhoneLoginView> createState() => _PhoneLoginViewState();
+  State<LoginView_mobile> createState() => _LoginView_mobileState();
 }
 
-class _PhoneLoginViewState extends State<PhoneLoginView> {
+class _LoginView_mobileState extends State<LoginView_mobile> {
   TextEditingController tecPhone = TextEditingController();
   TextEditingController tecVerify = TextEditingController();
 
@@ -48,13 +48,13 @@ class _PhoneLoginViewState extends State<PhoneLoginView> {
     // TODO: implement build
     return Scaffold(body:
       Column(children: [
-        KTTextField(tec: tecPhone, hintText: "Número de teléfono"),
+        ModedTextField(tec: tecPhone, hintText: "Número de teléfono"),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
           TextButton(onPressed: enviarTelefono_clicked, child: Text("Enviar Teléfono")),
           ),
         ],),
-        KTTextField(tec: tecVerify, hintText: "Número verificador"),
+        ModedTextField(tec: tecVerify, hintText: "Número verificador"),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
           TextButton(onPressed: enviarVerificacion_clicked, child: Text("Enviar Verificación")),
