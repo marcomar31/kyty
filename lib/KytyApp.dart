@@ -16,8 +16,7 @@ class KytyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     if (kIsWeb) {
-
-      return MaterialApp(title: "KytY Miau!",
+      return MaterialApp(title: "KytY Miau Web!",
         routes: {
           '/loginview': (context) => LoginView_web(),
           '/registerview': (context) => RegisterView(),
@@ -30,7 +29,7 @@ class KytyApp extends StatelessWidget {
         initialRoute: '/loginview',
       );
     } else {
-      return MaterialApp(title: "KytY Miau!",
+      return MaterialApp(title: "KytY Miau Mobile!",
         routes: {
           '/loginview': (context) => LoginView_mobile(),
           '/registerview': (context) => RegisterView(),

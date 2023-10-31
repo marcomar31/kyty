@@ -13,12 +13,12 @@ import 'package:kyty/Singletone/DataHolder.dart';
 import '../Custom/BottomMenu.dart';
 import '../OnBoarding/LoginView_web.dart';
 
-class HomeView_web extends StatefulWidget {
+class HomeView_mobile extends StatefulWidget {
   @override
-  _HomeView_webState createState() => _HomeView_webState();
+  _HomeView_mobileState createState() => _HomeView_mobileState();
 }
 
-class _HomeView_webState extends State<HomeView_web> {
+class _HomeView_mobileState extends State<HomeView_mobile> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final List<FbPost> posts = [];
   bool blIsList = false;
@@ -26,7 +26,7 @@ class _HomeView_webState extends State<HomeView_web> {
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
     return PostListView(sText: posts[index].titulo,
-        dFontSize: 20, iPosicion: index, onItemListClickedFun: onClickItemList,);
+      dFontSize: 20, iPosicion: index, onItemListClickedFun: onClickItemList,);
   }
 
   Widget creadorDeSeparadorLista(BuildContext context, int index) {
@@ -110,19 +110,26 @@ class _HomeView_webState extends State<HomeView_web> {
     }
   }
 
+  void loadGeoLocator() async {
+    Position pos = await DataHolder().geolocAdmin.determinePosition();
+    print("-----------------> Coordenadas: " + pos.toString());
+    DataHolder().geolocAdmin.registrarCambiosLoc();
+  }
+
   @override
   void initState() {
     descargarPosts();
     super.initState();
+    loadGeoLocator();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar:
-      AppBar(title: Text('KYTY'), backgroundColor: Color.fromRGBO(37, 77, 152, 1.0)), body:
-      Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
-        Center(child: celdasOLista(blIsList)),
-      ),
+    AppBar(title: Text('KYTY'), backgroundColor: Color.fromRGBO(37, 77, 152, 1.0)), body:
+    Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
+    Center(child: celdasOLista(blIsList)),
+    ),
       bottomNavigationBar: BottomMenu(onBotonesClicked: this.onClickBottonMenu),
       drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
       floatingActionButton: FloatingActionButton(
