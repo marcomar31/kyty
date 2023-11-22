@@ -8,7 +8,7 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
-  FbPost selectedPost = FbPost(titulo: "Cargando...", cuerpo: "Cargando..."); //Valor predeterminado
+  FbPost selectedPost = FbPost(titulo: "Cargando...", cuerpo: "Cargando...", urlImage: "https://instastudio.mx/wp-content/uploads/2021/10/Blanco_Mesa-de-trabajo-1.png"); //Valor predeterminado
 
   @override
   void initState() {
@@ -29,17 +29,22 @@ class _PostViewState extends State<PostView> {
       appBar: AppBar(title: selectedPost != null
           ? Text(DataHolder().selectedPost!.titulo)
           : Text("CARGANDO...")),
-      body: //selectedPost != null
-          /*?*/ Column(children: [
-              Text(selectedPost.titulo),
-              Text(selectedPost.cuerpo),
-              Image.asset(
-                "resources/kyty_logo.png",
-                width: 70,
-                height: 70,
-              ),
-              TextButton(onPressed: null, child: Text("Like")),
-            ],)
+      body: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Column(children: [
+                  Text(selectedPost.titulo),
+                  Text(selectedPost.cuerpo),
+                  if (selectedPost.urlImage != "")
+                    Image.network(selectedPost.urlImage, width: 300, height: 300,),
+                  if (selectedPost.urlImage == "")
+                    Image.asset(
+                      "resources/kyty_logo.png",
+                      width: 300,
+                      height: 300,
+                    ),
+                  TextButton(onPressed: null, child: Text("Like")),
+                ],),
+        ],
+      )
           //:  CircularProgressIndicator(),
     );
   }

@@ -22,12 +22,17 @@ class ModedTextField extends StatelessWidget {
     Row row = Row(
       children: [
         Image.asset("resources/kyty_logo.png", width: 30, height: 30,),
-        TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: hintText,
+        Flexible(
+          child: TextFormField(
+            controller: tec,
+            obscureText: blIsPassword,
+            enableSuggestions: !blIsPassword,
+            autocorrect: !blIsPassword,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: hintText)
           ),
-        )
+        ),
       ],
     );
     return row;

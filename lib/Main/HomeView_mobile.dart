@@ -55,18 +55,17 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   }
 
   void descargarPosts() async {
-    CollectionReference<FbPost> reference = db
-        .collection("Posts")
-        .withConverter(fromFirestore: FbPost.fromFirestore,
-        toFirestore: (FbPost usuario, _) => usuario.toFirestore());
+    CollectionReference<FbPost> ref = db.collection("Posts")
+        .withConverter(fromFirestore: FbPost.fromFirestore, toFirestore: (FbPost post, _) => post.toFirestore());
 
-    QuerySnapshot<FbPost> querySnap = await reference.get();
-    for (int i = 0; i < querySnap.docs.length; i++) {
+    QuerySnapshot<FbPost> querySnapshot = await ref.get();
+    for(int i = 0;i<querySnapshot.docs.length; i++){
       setState(() {
-        posts.add(querySnap.docs[i].data());
+        posts.add(querySnapshot.docs[i].data());
       });
+
     }
-    //FbPost usuario = querySnap.data();
+
   }
 
   void onClickVolver(BuildContext context) {
@@ -81,7 +80,6 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   }
 
   void onClickBottonMenu(int indice) {
-    // TODO: implement onBottonMenuPressed
     setState(() {
       if(indice == 0){
         blIsList = true;
@@ -118,8 +116,8 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
 
   @override
   void initState() {
-    descargarPosts();
     super.initState();
+    descargarPosts();
     loadGeoLocator();
   }
 

@@ -9,11 +9,14 @@ import 'package:kyty/Splash/SplashView.dart';
 
 import 'Main/PostView.dart';
 import 'OnBoarding/RegisterView.dart';
+import 'Singletone/DataHolder.dart';
 
 class KytyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DataHolder().initPlatformAdmin(context);
+
     // TODO: implement build
     if (kIsWeb) {
       return MaterialApp(title: "KytY Miau Web!",
@@ -26,7 +29,7 @@ class KytyApp extends StatelessWidget {
           '/postview':(context) => PostView(),
           '/postcreateview': (context) => PostCreateView(),
         },
-        initialRoute: '/loginview',
+        initialRoute: '/homeview',
       );
     } else {
       return MaterialApp(title: "KytY Miau Mobile!",
@@ -39,7 +42,7 @@ class KytyApp extends StatelessWidget {
           '/postview':(context) => PostView(),
           '/postcreateview': (context) => PostCreateView(),
         },
-        initialRoute: '/loginview',
+        initialRoute: '/splashview',
       );
     }
   }
