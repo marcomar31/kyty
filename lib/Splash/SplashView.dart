@@ -6,6 +6,8 @@ import 'package:kyty/FirestoreObjects/FbUsuario.dart';
 import '../Singletone/DataHolder.dart';
 
 class SplashView extends StatefulWidget {
+  const SplashView({super.key});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -25,7 +27,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   void checkSession() async {
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 4));
     if (FirebaseAuth.instance.currentUser != null) {
       String uidUsuario = FirebaseAuth.instance.currentUser!.uid;
       //DocumentSnapshot<Map<String, dynamic>> datos = await db.collection("Usuarios").doc(uidUsuario).get();
@@ -38,16 +40,9 @@ class _SplashViewState extends State<SplashView> {
 
       DocumentSnapshot<FbUsuario> docSnap = await reference.get();
 
-      FbUsuario usuario = docSnap.data()!;
-      if (usuario!=null) {
-        print("El manin este se llama: "+usuario.nombre);
-        print("El manin tiene "+usuario.edad.toString()+" años");
-        print("El manin mide "+usuario.altura.toString());
-        Navigator.of(context).popAndPushNamed("/homeview");
-      } else {
-        Navigator.of(context).popAndPushNamed("/perfilview");
-      }
-    } else {
+      //FbUsuario usuario = docSnap.data()!;
+      Navigator.of(context).popAndPushNamed("/homeview");
+        } else {
       Navigator.of(context).popAndPushNamed("/loginview");
     }
   }
@@ -57,23 +52,19 @@ class _SplashViewState extends State<SplashView> {
     // TODO: implement build
 
     Column column = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Positioned(
-            left: DataHolder().platformAdmin.getScreenWidth()*0.1,
-            top: DataHolder().platformAdmin.getScreenHeight()*0.1,
-            width: DataHolder().platformAdmin.getScreenWidth()*0.8,
-            height: DataHolder().platformAdmin.getScreenHeight()*0.8,
-            child: Image.asset("resources/kyty_logo.png",)
+        Padding(
+          padding: const EdgeInsets.all(30),
+          child:
+          Image.asset("resources/kyty_logo.png",
+            width: DataHolder().platformAdmin.getScreenWidth() * 0.5,
+            height: DataHolder().platformAdmin.getScreenHeight() * 0.5,
+          ),
         ),
-        Padding(padding: EdgeInsets.all(30)),
-
-        Positioned(
-            left: DataHolder().platformAdmin.getScreenWidth()*0.1,
-            top: DataHolder().platformAdmin.getScreenHeight()*0.1,
-            width: DataHolder().platformAdmin.getScreenWidth()*0.8,
-            height: DataHolder().platformAdmin.getScreenHeight()*0.8,
-            child: CircularProgressIndicator()
-        ),
+        const SizedBox(height: 30),
+        CircularProgressIndicator(),
       ],
     );
 

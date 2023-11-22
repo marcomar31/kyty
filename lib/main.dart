@@ -10,5 +10,5 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   DataHolder().initDataHolder();
-  runApp(KytyApp());
+  runApp(const KytyApp());
 }

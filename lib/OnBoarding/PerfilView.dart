@@ -10,20 +10,22 @@ class PerfilView extends StatelessWidget {
   TextEditingController tecNombre = TextEditingController();
   TextEditingController tecEdad = TextEditingController();
 
+  PerfilView({super.key});
+
   @override
   Widget build(BuildContext context) {
     _context = context;
 
     return Scaffold(body:
       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-        Text("Personaliza tu perfil", style: TextStyle(fontSize: 33)),
-        Padding(padding: EdgeInsets.symmetric(vertical: 16),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+        const Text("Personaliza tu perfil", style: TextStyle(fontSize: 33)),
+        Padding(padding: const EdgeInsets.symmetric(vertical: 16),
           child: Flexible(
             child: SizedBox(width: 400,
               child: TextField(
                 controller: tecNombre,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Nombre'
                 ),
@@ -31,13 +33,13 @@ class PerfilView extends StatelessWidget {
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.symmetric(vertical: 10
+        Padding(padding: const EdgeInsets.symmetric(vertical: 10
         ),
           child: Flexible(
             child: SizedBox(width: 400,
               child: TextFormField(
                 controller: tecEdad,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Edad'
                 ),
@@ -46,12 +48,12 @@ class PerfilView extends StatelessWidget {
           ),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickAceptar, child: Text("ACEPTAR")),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
+          TextButton(onPressed: onClickAceptar, child: const Text("ACEPTAR")),
           ),
 
-          Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-          TextButton(onPressed: onClickCancelar, child: Text("CANCELAR")),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
+          TextButton(onPressed: onClickCancelar, child: const Text("CANCELAR")),
           ),
         ],),
       ]),
@@ -74,14 +76,14 @@ class PerfilView extends StatelessWidget {
     try {
       edadUsuario = int.parse(tecEdad.text);
     } on Exception {
-      ScaffoldMessenger.of(_context).showSnackBar(SnackBar(content: Text("Por favor, introduzca un número")));
+      ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Por favor, introduzca un número")));
       excepcion = true;
     }
     if (!excepcion) {
       if (edadUsuario <= 0) {
-        ScaffoldMessenger.of(_context).showSnackBar(SnackBar(content: Text("Por favor, introduzca una edad positiva")));
+        ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Por favor, introduzca una edad positiva")));
       } else {
-        FbUsuario usuario = new FbUsuario(nombre: tecNombre.text, edad: edadUsuario, altura: 0, colorPelo: '');
+        FbUsuario usuario = FbUsuario(nombre: tecNombre.text, edad: edadUsuario, altura: 0, colorPelo: '');
         bool excepcion = false;
         try {
           //UID del usuario que está logeado
@@ -94,7 +96,7 @@ class PerfilView extends StatelessWidget {
           //Crear documento con ID NUESTRO (o proporcionado por nosotros)
           //db.collection("Usuarios").doc("1").set(usuario);
         } on Exception {
-          ScaffoldMessenger.of(_context).showSnackBar(SnackBar(content: Text("Se ha producido un error al completar el perfil del usuario")));
+          ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Se ha producido un error al completar el perfil del usuario")));
           excepcion = true;
         }
         if (!excepcion) {

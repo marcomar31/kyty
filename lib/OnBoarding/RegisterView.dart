@@ -9,9 +9,11 @@ class RegisterView extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   TextEditingController repasswordController = TextEditingController();
 
-  SnackBar snackBar = SnackBar(
+  SnackBar snackBar = const SnackBar(
       content: Text('Las contraseñas no coinciden.')
   );
+
+  RegisterView({super.key});
 
   void onCLickCancelar() {
     Navigator.of(_context).popAndPushNamed('/loginview');
@@ -44,22 +46,22 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     _context = context;
-    Column columna = new Column(children: [
+    Column columna = Column(children: [
       //Text("LOGIN", style: TextStyle(fontSize: 25),),
-      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: Flexible(child: TextField(
           controller: usernameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Username'
           ),
         ),
         ),
       ),
-      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
         child: Flexible(child: TextFormField(
           controller: passwordController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Password'
           ),
@@ -67,10 +69,10 @@ class RegisterView extends StatelessWidget {
         ),
         ),
       ),
-      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: Flexible(child: TextFormField(
           controller: repasswordController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Repassword'
           ),
@@ -80,12 +82,12 @@ class RegisterView extends StatelessWidget {
       ),
 
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-        TextButton(onPressed: onClickAceptarRegister, child: Text("ACEPTAR")),
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
+        TextButton(onPressed: onClickAceptarRegister, child: const Text("ACEPTAR")),
         ),
 
-        Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-        TextButton(onPressed: onCLickCancelar, child: Text("CANCELAR")),
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
+        TextButton(onPressed: onCLickCancelar, child: const Text("CANCELAR")),
         ),
       ],),
     ]);

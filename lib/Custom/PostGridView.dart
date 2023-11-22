@@ -23,15 +23,14 @@ class PostGridView extends StatelessWidget {
         mainAxisSpacing: 8.0,
         crossAxisSpacing: 8.0,
       ),
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       itemCount: post.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(child:
-          Container(child:
+          Container(color: Colors.blue,child:
             Center(child:
               Text(post[index].titulo),
-            ),
-            color: Colors.blue,),
+            ),),
           onTap: () {
             onItemListaClickedFunction!(index);
           },

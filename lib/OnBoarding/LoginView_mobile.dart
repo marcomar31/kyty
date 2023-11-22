@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../Custom/ModedTextField.dart';
 
 class LoginView_mobile extends StatefulWidget {
+  const LoginView_mobile({super.key});
+
   @override
   State<LoginView_mobile> createState() => _LoginView_mobileState();
 }
@@ -62,16 +64,16 @@ class _LoginView_mobileState extends State<LoginView_mobile> {
     // TODO: implement build
     return Scaffold(body:
       Column(children: [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 100), child:
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 100), child:
           ModedTextField(tec: tecPhone, hintText: "Número de teléfono"),
         ),
-        TextButton(onPressed: enviarTelefono_clicked, child: Text("Enviar Teléfono")),
+        TextButton(onPressed: enviarTelefono_clicked, child: const Text("Enviar Teléfono")),
         if(blMostrarVerificacion)
-          Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5), child:
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5), child:
             ModedTextField(tec: tecVerify, hintText: "Número verificador"),
           ),
         if(blMostrarVerificacion)
-          TextButton(onPressed: enviarVerificacion_clicked, child: Text("Enviar"))
+          TextButton(onPressed: enviarVerificacion_clicked, child: const Text("Enviar"))
       ],)
     );
   }

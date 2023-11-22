@@ -5,12 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../FirestoreObjects/FbPost.dart';
 import 'FirebaseAdmin.dart';
-import 'HttpAdmin.dart';
 import 'PlatformAdmin.dart';
 
 class DataHolder {
 
-  static final DataHolder _dataHolder = new DataHolder._internal();
+  static final DataHolder _dataHolder = DataHolder._internal();
 
   String sNombre="Kyty DataHolder";
   late String sPostTitle;
@@ -19,7 +18,7 @@ class DataHolder {
   FirebaseAdmin fbAdmin = FirebaseAdmin();
   GeolocAdmin geolocAdmin = GeolocAdmin();
   late PlatformAdmin platformAdmin;
-  HttpAdmin httpAdmin = HttpAdmin();
+  //HttpAdmin httpAdmin = HttpAdmin();
 
   DataHolder._internal() {
     //sPostTitle="Titulo de Post";
@@ -60,14 +59,14 @@ class DataHolder {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String? fbpost_titulo = prefs.getString('fbpost_titulo');
-    fbpost_titulo??="";
+    String? fbpostTitulo = prefs.getString('fbpost_titulo');
+    fbpostTitulo??="";
 
-    String? fbpost_cuerpo = prefs.getString('fbpost_cuerpo');
-    fbpost_cuerpo??="";
+    String? fbpostCuerpo = prefs.getString('fbpost_cuerpo');
+    fbpostCuerpo??="";
 
-    print("SHARED PREFERENCES --> "+fbpost_titulo);
-    selectedPost = FbPost(titulo: fbpost_titulo, cuerpo: fbpost_cuerpo, urlImage: '');
+    print("SHARED PREFERENCES --> $fbpostTitulo");
+    selectedPost = FbPost(titulo: fbpostTitulo, cuerpo: fbpostCuerpo, urlImage: '');
 
     return selectedPost;
   }

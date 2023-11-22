@@ -14,6 +14,8 @@ import '../Custom/BottomMenu.dart';
 import '../OnBoarding/LoginView_web.dart';
 
 class HomeView_mobile extends StatefulWidget {
+  const HomeView_mobile({super.key});
+
   @override
   _HomeView_mobileState createState() => _HomeView_mobileState();
 }
@@ -30,7 +32,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   }
 
   Widget creadorDeSeparadorLista(BuildContext context, int index) {
-    return Column(
+    return const Column(
       children: [
         Divider(color: Color.fromRGBO(37, 77, 152, 1.0), thickness: 2,),
       ],
@@ -44,7 +46,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   Widget? celdasOLista(bool isList) {
     if (isList) {
       return ListView.separated(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         itemCount: posts.length,
         itemBuilder: creadorDeItemLista,
         separatorBuilder: creadorDeSeparadorLista,
@@ -110,7 +112,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
 
   void loadGeoLocator() async {
     Position pos = await DataHolder().geolocAdmin.determinePosition();
-    print("-----------------> Coordenadas: " + pos.toString());
+    print("-----------------> Coordenadas: $pos");
     DataHolder().geolocAdmin.registrarCambiosLoc();
   }
 
@@ -124,20 +126,20 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar:
-    AppBar(title: Text('KYTY'), backgroundColor: Color.fromRGBO(37, 77, 152, 1.0)), body:
-    Padding(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
+    AppBar(title: const Text('KYTY'), backgroundColor: const Color.fromRGBO(37, 77, 152, 1.0)), body:
+    Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
     Center(child: celdasOLista(blIsList)),
     ),
-      bottomNavigationBar: BottomMenu(onBotonesClicked: this.onClickBottonMenu),
+      bottomNavigationBar: BottomMenu(onBotonesClicked: onClickBottonMenu),
       drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed("/postcreateview");
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      backgroundColor: Color.fromRGBO(49, 101, 203, 1.0),
+      backgroundColor: const Color.fromRGBO(49, 101, 203, 1.0),
     );
   }
 }

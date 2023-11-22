@@ -8,16 +8,17 @@ import 'package:kyty/FirestoreObjects/FbUsuario.dart';
 import '../Custom/BottomMenu.dart';
 
 class LoginView_web extends StatelessWidget {
-
   late BuildContext _context;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   TextEditingController tecUsername = TextEditingController();
   TextEditingController tecPassword = TextEditingController();
 
-  SnackBar snackBar = SnackBar(
-      content: Text('Se produjo un error al intentar logearse.')
+  SnackBar snackBar = const SnackBar(
+    content: Text('Se produjo un error al intentar logearse.'),
   );
+
+  LoginView_web({super.key});
 
   void onClickRegistrar() {
     Navigator.of(_context).popAndPushNamed('/registerview');
@@ -31,18 +32,15 @@ class LoginView_web extends StatelessWidget {
       );
       String uidUsuario = FirebaseAuth.instance.currentUser!.uid;
 
-      DocumentReference<FbUsuario> ref = db.collection("Usuarios")
-        .doc(uidUsuario)
-        .withConverter(fromFirestore: FbUsuario.fromFirestore,
-          toFirestore: (FbUsuario usuario, _) => usuario.toFirestore());
+      DocumentReference<FbUsuario> ref = db.collection("Usuarios").doc(uidUsuario).withConverter(
+        fromFirestore: FbUsuario.fromFirestore,
+        toFirestore: (FbUsuario usuario, _) => usuario.toFirestore(),
+      );
 
       DocumentSnapshot<FbUsuario> docSnap = await ref.get();
       if (docSnap.exists) {
         FbUsuario usuario = docSnap.data()!;
-        if (usuario != null) {
-          print("El manin este se llama: "+usuario.nombre);
-          Navigator.of(_context).popAndPushNamed("/homeview");
-        }
+        Navigator.of(_context).popAndPushNamed("/homeview");
       } else {
         Navigator.of(_context).popAndPushNamed("/perfilview");
       }
@@ -58,46 +56,54 @@ class LoginView_web extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     _context = context;
 
-    Column columna = new Column(children: [
-      //Text("LOGIN", style: TextStyle(fontSize: 25),),
-      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-        child: Flexible(child: TextField(
-          controller: tecUsername,
-          decoration: InputDecoration(
+    Column columna = Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+          child: TextField(
+            controller: tecUsername,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Username'
+              labelText: 'Username',
+            ),
           ),
         ),
-        ),
-      ),
-      Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-        child: Flexible(child: TextFormField(
-          controller: tecPassword,
-          decoration: InputDecoration(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+          child: TextFormField(
+            controller: tecPassword,
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Password'
+              labelText: 'Password',
+            ),
+            obscureText: true,
           ),
-          obscureText: true,
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: TextButton(
+                onPressed: onClickAceptarLogin,
+                child: const Text("ACEPTAR"),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: TextButton(
+                onPressed: onClickRegistrar,
+                child: const Text("REGISTRO"),
+              ),
+            ),
+          ],
         ),
-      ),
+      ],
+    );
 
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-        TextButton(onPressed: onClickAceptarLogin, child: Text("ACEPTAR")),
-        ),
-
-        Padding(padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20), child:
-        TextButton(onPressed: onClickRegistrar, child: Text("REGISTRO")),
-        ),
-      ],),
-
-    ]);
-
-    AppBar appBar = new AppBar(
+    AppBar appBar = AppBar(
       title: const Text("LOGIN"),
       centerTitle: true,
       shadowColor: Colors.blue,
@@ -105,7 +111,8 @@ class LoginView_web extends StatelessWidget {
       automaticallyImplyLeading: false,
     );
 
-    return Scaffold(body: columna,
+    return Scaffold(
+      body: columna,
       appBar: appBar,
       bottomNavigationBar: BottomMenu(onBotonesClicked: onBottonMenuPressed),
     );
@@ -113,9 +120,7 @@ class LoginView_web extends StatelessWidget {
 
   @override
   void onBottonMenuPressed(int indice) {
-    // TODO: implement onBottonMenuPressed
-    if(indice == 0)exit(0);
-    print("---------->>> LOGIN: "+indice.toString());
+    if (indice == 0) exit(0);
+    print("---------->>> LOGIN: $indice");
   }
-
 }

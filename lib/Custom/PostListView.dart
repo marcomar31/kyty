@@ -27,7 +27,7 @@ class PostListView extends StatelessWidget {
                     color: Colors.white,
                     fontSize: dFontSize),
               ),
-              Spacer(),
+              const Spacer(),
               TextButton(onPressed: null, child: Text("+",style: TextStyle(fontSize: dFontSize)))
             ],
           )

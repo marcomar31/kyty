@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:kyty/Singletone/DataHolder.dart';
 import '../FirestoreObjects/FbPost.dart';
 
 class PostCreateView extends StatefulWidget{
+  const PostCreateView({super.key});
+
   @override
   State<PostCreateView> createState() => _PostCreateViewState();
 }
@@ -21,11 +22,11 @@ class _PostCreateViewState extends State<PostCreateView> {
 
   TextEditingController tecImage = TextEditingController();
 
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
   File _imagePreview = File("");
 
-  void onGallery_clicked() async {
+  void onGalleryClick() async {
     XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
@@ -35,7 +36,7 @@ class _PostCreateViewState extends State<PostCreateView> {
     }
   }
 
-  void onCamera_clicked() async {
+  void onCameraClick() async {
     XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
@@ -46,37 +47,36 @@ class _PostCreateViewState extends State<PostCreateView> {
   }
 
   void subirPost() async {
-    //-----------------------INICIO DE SUBIR IMAGEN--------
+    //--------INICIO DE SUBIR IMAGEN--------
     final storageRef = FirebaseStorage.instance.ref();
 
-    String rutaEnNube =
-        "posts/"+FirebaseAuth.instance.currentUser!.uid+"/imgs/"+
-            DateTime.now().millisecondsSinceEpoch.toString();
+    String rutaEnNube = "posts/${FirebaseAuth.instance.currentUser!.uid}/imgs/${DateTime.now().year}_${DateTime.now().month}_${DateTime.now().day}_${DateTime.now().millisecondsSinceEpoch}";
     final rutaAFicheroEnNube = storageRef.child(rutaEnNube);
-    // Create the file metadata
+
     final metadata = SettableMetadata(contentType: "image/jpeg");
     try {
-      await rutaAFicheroEnNube.putFile(_imagePreview,metadata);
+      await rutaAFicheroEnNube.putFile(_imagePreview, metadata);
 
-    } on FirebaseException catch (e) {
-      print("ERROR AL SUBIR IMAGEN: "+e.toString());
+    } on FirebaseException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al subir la imagen'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
+    //--------FIN DE SUBIR IMAGEN--------
 
-    print("SE HA SUBIDO LA IMAGEN");
-
+    //--------INICIO DE SUBIR POST--------
     String urlImage = await rutaAFicheroEnNube.getDownloadURL();
 
-    print("URL DE DESCARGA: " + urlImage);
-
-    //-----------------------FIN DE SUBIR IMAGEN--------
-
-    //-----------------------INICIO DE SUBIR POST--------
-
-    FbPost postNuevo = new FbPost(
+    FbPost postNuevo = FbPost(
         titulo: tecTitulo.text,
         cuerpo: tecCuerpo.text,
         urlImage: urlImage);
     DataHolder().crearPostEnFB(postNuevo);
+    //--------FIN DE SUBIR POST--------
+
     Navigator.of(context).popAndPushNamed("/homeview");
   }
 
@@ -85,33 +85,35 @@ class _PostCreateViewState extends State<PostCreateView> {
     // TODO: implement build
 
     return Scaffold(
-      appBar: AppBar(title: Text("SUBIR NUEVO POST")),
+      appBar: AppBar(title: const Text("SUBIR NUEVO POST")),
       body: Column(
         children: [
-          Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
             child: TextField(
               controller: tecTitulo,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Título'
               )
             ),
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
             child: TextField(
               controller: tecCuerpo,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Cuerpo'
               ),
             ),
           ),
-          Image.file(_imagePreview,width: 175,height: 175,),
+          (_imagePreview.path.isEmpty)
+              ? const Text("Ninguna imagen seleccionada")
+              : Image.file(_imagePreview, width: 175, height: 175),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              TextButton(onPressed: onGallery_clicked, child: Text("Galería")),
-              TextButton(onPressed: onCamera_clicked, child: Text("Cámara")),
+              TextButton(onPressed: onGalleryClick, child: const Text("Galería")),
+              TextButton(onPressed: onCameraClick, child: const Text("Cámara")),
           ],),
-          TextButton(onPressed: subirPost, child: Text("PUBLICAR"))
+          TextButton(onPressed: subirPost, child: const Text("PUBLICAR"))
         ],
       ),
     );

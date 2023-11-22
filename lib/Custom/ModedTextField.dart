@@ -9,12 +9,12 @@ class ModedTextField extends StatelessWidget {
   double dPaddingV;
 
   // Constructor que acepta el hintText como parámetro
-  ModedTextField({Key? key, this.hintText="",
+  ModedTextField({super.key, this.hintText="",
     required this.tec,
     this.blIsPassword = false,
     this.dPaddingH = 60,
     this.dPaddingV = 15,
-  }) :super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ModedTextField extends StatelessWidget {
             enableSuggestions: !blIsPassword,
             autocorrect: !blIsPassword,
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               hintText: hintText)
           ),
         ),
