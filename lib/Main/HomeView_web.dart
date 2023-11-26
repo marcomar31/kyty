@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:kyty/Custom/Drawer_mobile.dart';
 import 'package:kyty/Custom/PostListView.dart';
 import 'package:kyty/Custom/PostGridView.dart';
@@ -22,7 +23,9 @@ class HomeView_web extends StatefulWidget {
 class _HomeView_webState extends State<HomeView_web> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final List<FbPost> posts = [];
+  final Map<String, FbPost> mapPosts = Map();
   bool blIsList = false;
+  String eve = "Hola";
   late BottomMenu bottomMenu;
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
@@ -56,19 +59,50 @@ class _HomeView_webState extends State<HomeView_web> {
   }
 
   void descargarPosts() async {
-    CollectionReference<FbPost> reference = db
-        .collection("Posts")
-        .withConverter(fromFirestore: FbPost.fromFirestore,
-        toFirestore: (FbPost usuario, _) => usuario.toFirestore());
+    CollectionReference<FbPost> ref=db.collection("Posts")
+        .withConverter(fromFirestore: FbPost
+        .fromFirestore,
+      toFirestore: (FbPost post, _) => post.toFirestore(),);
 
-    QuerySnapshot<FbPost> querySnap = await reference.get();
-    for (int i = 0; i < querySnap.docs.length; i++) {
+    ref.snapshots().listen(datosDescargados, onError: descargaPostError,);
+  }
+
+  void datosDescargados(QuerySnapshot<FbPost> postsDescargados) {
+    print("NUMERO DE POSTS ACTUALIZADOS>>>> " +
+        postsDescargados.docChanges.length.toString());
+
+    for (int i = 0; i < postsDescargados.docChanges.length; i++) {
+      FbPost temp = postsDescargados.docChanges[i].doc.data()!;
+      mapPosts[postsDescargados.docChanges[i].doc.id] = temp;
+    }
+
+    setState(() {
+      posts.clear();
+      posts.addAll(mapPosts.values);
+    });
+  }
+
+  void descargaPostError(error){
+    print("Listen failed: $error");
+  }
+
+  void descargarPostsOLD() async{
+    posts.clear();
+
+    CollectionReference<FbPost> ref=db.collection("Posts")
+        .withConverter(fromFirestore: FbPost.fromFirestore,
+      toFirestore: (FbPost post, _) => post.toFirestore(),);
+
+
+    QuerySnapshot<FbPost> querySnapshot=await ref.get();
+
+    for(int i=0;i<querySnapshot.docs.length;i++){
       setState(() {
-        posts.add(querySnap.docs[i].data());
+        posts.add(querySnapshot.docs[i].data());
       });
     }
-    //FbPost usuario = querySnap.data();
   }
+
 
   void onClickVolver(BuildContext context) {
     FirebaseAuth.instance.signOut();
@@ -82,7 +116,6 @@ class _HomeView_webState extends State<HomeView_web> {
   }
 
   void onClickBottonMenu(int indice) {
-    // TODO: implement onBottonMenuPressed
     setState(() {
       if(indice == 0){
         blIsList = true;
@@ -111,29 +144,38 @@ class _HomeView_webState extends State<HomeView_web> {
     }
   }
 
+  void determinarTempLocal() async{
+    Position position = await DataHolder().geolocAdmin.determinePosition();
+    double valor=await DataHolder().httpAdmin.pedirTemperaturasEn(position.latitude,position.longitude);
+    print("LA TEMPERATURA EN EL SITIO DONDE ESTAS ES: ${valor}");
+  }
+
   @override
   void initState() {
-    descargarPosts();
     super.initState();
+    descargarPosts();
+    determinarTempLocal();
+    DataHolder().suscribeACambiosGPSUsuario();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar:
-      AppBar(title: const Text('KYTY'), backgroundColor: const Color.fromRGBO(37, 77, 152, 1.0)), body:
-      Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
-        Center(child: celdasOLista(blIsList)),
-      ),
-      bottomNavigationBar: BottomMenu(onBotonesClicked: onClickBottonMenu),
-      drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed("/postcreateview");
-        },
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      backgroundColor: const Color.fromRGBO(49, 101, 203, 1.0),
+    return Scaffold(
+      appBar: AppBar(title: const Text('KYTY'), backgroundColor: const Color.fromRGBO(37, 77, 152, 1.0)),
+      body:
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
+          Center(child: celdasOLista(blIsList)),
+        ),
+        bottomNavigationBar: BottomMenu(onBotonesClicked: onClickBottonMenu),
+        drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed("/postcreateview");
+          },
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+        backgroundColor: const Color.fromRGBO(49, 101, 203, 1.0),
     );
   }
 }

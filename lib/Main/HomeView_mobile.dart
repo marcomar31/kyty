@@ -24,6 +24,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final List<FbPost> posts = [];
   bool blIsList = false;
+  String eve="Hola";
   late BottomMenu bottomMenu;
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
@@ -61,7 +62,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
         .withConverter(fromFirestore: FbPost.fromFirestore, toFirestore: (FbPost post, _) => post.toFirestore());
 
     QuerySnapshot<FbPost> querySnapshot = await ref.get();
-    for(int i = 0;i<querySnapshot.docs.length; i++){
+    for(int i = 0; i < querySnapshot.docs.length; i++){
       setState(() {
         posts.add(querySnapshot.docs[i].data());
       });
@@ -112,8 +113,8 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
 
   void loadGeoLocator() async {
     Position pos = await DataHolder().geolocAdmin.determinePosition();
-    print("-----------------> Coordenadas: $pos");
-    DataHolder().geolocAdmin.registrarCambiosLoc();
+    print("-----------------> Coordenadas: " + pos.toString());
+    //DataHolder().geolocAdmin.registrarCambiosLoc();
   }
 
   @override
@@ -125,11 +126,12 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar:
-    AppBar(title: const Text('KYTY'), backgroundColor: const Color.fromRGBO(37, 77, 152, 1.0)), body:
-    Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
-    Center(child: celdasOLista(blIsList)),
-    ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('KYTY'), backgroundColor: const Color.fromRGBO(37, 77, 152, 1.0)),
+      body:
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16), child:
+          Center(child: celdasOLista(blIsList)),
+        ),
       bottomNavigationBar: BottomMenu(onBotonesClicked: onClickBottonMenu),
       drawer: Drawer_mobile(onItemTap: fHomeViewDrawerOnTap),
       floatingActionButton: FloatingActionButton(

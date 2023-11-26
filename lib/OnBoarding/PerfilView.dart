@@ -70,39 +70,17 @@ class PerfilView extends StatelessWidget {
     Navigator.of(_context).popAndPushNamed("/loginview");
   }
 
-  void onClickAceptar() {
-    int edadUsuario = 0;
-    bool excepcion = false;
-    try {
-      edadUsuario = int.parse(tecEdad.text);
-    } on Exception {
-      ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Por favor, introduzca un número")));
-      excepcion = true;
-    }
-    if (!excepcion) {
-      if (edadUsuario <= 0) {
-        ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Por favor, introduzca una edad positiva")));
-      } else {
-        FbUsuario usuario = FbUsuario(nombre: tecNombre.text, edad: edadUsuario, altura: 0, colorPelo: '');
-        bool excepcion = false;
-        try {
-          //UID del usuario que está logeado
-          String uidUsuario = FirebaseAuth.instance.currentUser!.uid;
-          db.collection('Usuarios').doc(uidUsuario).set(usuario.toFirestore());
+  void onClickAceptar() async{
 
-          //Crear documento con ID AUTO
-          //db.collection("Usuarios").add(usuario);
+    FbUsuario usuario = new FbUsuario(nombre: tecNombre.text,
+        edad: int.parse(tecEdad.text), altura: 0,colorPelo: "",
+        geoloc: GeoPoint(0,0));
 
-          //Crear documento con ID NUESTRO (o proporcionado por nosotros)
-          //db.collection("Usuarios").doc("1").set(usuario);
-        } on Exception {
-          ScaffoldMessenger.of(_context).showSnackBar(const SnackBar(content: Text("Se ha producido un error al completar el perfil del usuario")));
-          excepcion = true;
-        }
-        if (!excepcion) {
-          Navigator.of(_context).popAndPushNamed("/homeview");
-        }
-      }
-    }
+
+    //Crear documento con ID NUESTRO (o proporsionado por nosotros)
+    String uidUsuario= FirebaseAuth.instance.currentUser!.uid;
+    await db.collection("Usuarios").doc(uidUsuario).set(usuario.toFirestore());
+
+    Navigator.of(_context).popAndPushNamed("/homeview");
   }
 }

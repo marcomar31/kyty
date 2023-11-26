@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kyty/Main/HomeView_web.dart';
+import 'package:kyty/Main/HomeView_mobile.dart';
 import 'package:kyty/Main/PostCreateView.dart';
 import 'package:kyty/OnBoarding/LoginView_web.dart';
 import 'package:kyty/OnBoarding/PerfilView.dart';
@@ -25,20 +26,20 @@ class KytyApp extends StatelessWidget {
         routes: {
           '/loginview': (context) => LoginView_web(),
           '/registerview': (context) => RegisterView(),
-          '/homeview': (context) => const HomeView_web(),
+          '/homeview': (context) => HomeView_web(),
           '/splashview': (context) => const SplashView(),
           '/perfilview': (content) => PerfilView(),
           '/postview':(context) => const PostView(),
           '/postcreateview': (context) => const PostCreateView(),
         },
-        initialRoute: '/splashview',
+        initialRoute: '/homeview',
       );
     } else {
       return MaterialApp(title: "KytY Miau Mobile!",
         routes: {
           '/loginview': (context) => const LoginView_mobile(),
           '/registerview': (context) => RegisterView(),
-          '/homeview': (context) => const HomeView_web(),
+          '/homeview': (context) => const HomeView_mobile(),
           '/splashview': (context) => const SplashView(),
           '/perfilview': (content) => PerfilView(),
           '/postview':(context) => const PostView(),

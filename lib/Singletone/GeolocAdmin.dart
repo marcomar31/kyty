@@ -3,6 +3,12 @@ import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
 class GeolocAdmin{
+
+
+  /// Determine the current position of the device.
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -40,14 +46,15 @@ class GeolocAdmin{
     return await Geolocator.getCurrentPosition();
   }
 
-  void registrarCambiosLoc(){
-    const LocationSettings locationSettings = LocationSettings(
+  void registrarCambiosLoc(Function(Position? position) funCambioPos){
+    final LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 0,
     );
-    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-            (Position? position) {
-          print(position == null ? 'Unknown' : '${position.latitude.toString()}, ${position.longitude.toString()}');
-        });
+    //print("ENTRE!!!!!!!!!!");
+    StreamSubscription<Position> positionStream =
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen(funCambioPos);
   }
+
 }

@@ -20,9 +20,7 @@ class _PostCreateViewState extends State<PostCreateView> {
 
   TextEditingController tecCuerpo = TextEditingController();
 
-  TextEditingController tecImage = TextEditingController();
-
-  final ImagePicker _picker = ImagePicker();
+  ImagePicker _picker = ImagePicker();
 
   File _imagePreview = File("");
 
@@ -82,8 +80,6 @@ class _PostCreateViewState extends State<PostCreateView> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Scaffold(
       appBar: AppBar(title: const Text("SUBIR NUEVO POST")),
       body: Column(

@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:kyty/Singletone/GeolocAdmin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../FirestoreObjects/FbPost.dart';
+import '../FirestoreObjects/FbUsuario.dart';
 import 'FirebaseAdmin.dart';
+import 'GeolocAdmin.dart';
+import 'HttpAdmin.dart';
 import 'PlatformAdmin.dart';
 
 class DataHolder {
@@ -18,11 +22,11 @@ class DataHolder {
   FirebaseAdmin fbAdmin = FirebaseAdmin();
   GeolocAdmin geolocAdmin = GeolocAdmin();
   late PlatformAdmin platformAdmin;
-  //HttpAdmin httpAdmin = HttpAdmin();
+  HttpAdmin httpAdmin = HttpAdmin();
+  late FbUsuario usuario;
 
   DataHolder._internal() {
-    //sPostTitle="Titulo de Post";
-    //loadCachedFbPost();
+
   }
 
   factory DataHolder(){
@@ -35,7 +39,7 @@ class DataHolder {
   }
 
   void initPlatformAdmin(BuildContext context){
-    platformAdmin=PlatformAdmin(context: context);
+    platformAdmin = PlatformAdmin(context: context);
   }
 
   void crearPostEnFB(FbPost post) {
@@ -54,6 +58,21 @@ class DataHolder {
     prefs.setString('fbpost_urlImage', selectedPost!.urlImage);
   }
 
+  Future<FbUsuario?> loadFbUsuario() async{
+    String uid=FirebaseAuth.instance.currentUser!.uid;
+    print("UID DE DESCARGA loadFbUsuario------------->>>> ${uid}");
+    DocumentReference<FbUsuario> ref=db.collection("Usuarios")
+        .doc(uid)
+        .withConverter(fromFirestore: FbUsuario.fromFirestore,
+      toFirestore: (FbUsuario usuario, _) => usuario.toFirestore(),);
+
+
+    DocumentSnapshot<FbUsuario> docSnap=await ref.get();
+    print("docSnap DE DESCARGA loadFbUsuario------------->>>> ${docSnap.data()}");
+    usuario=docSnap.data()!;
+    return usuario;
+  }
+
   Future<FbPost?> loadCachedFbPost() async {
     if(selectedPost!=null) return selectedPost;
 
@@ -65,9 +84,21 @@ class DataHolder {
     String? fbpostCuerpo = prefs.getString('fbpost_cuerpo');
     fbpostCuerpo??="";
 
+    String? fbpostUrlImage = prefs.getString('fbpost_urlImage');
+    fbpostUrlImage??="";
+
     print("SHARED PREFERENCES --> $fbpostTitulo");
-    selectedPost = FbPost(titulo: fbpostTitulo, cuerpo: fbpostCuerpo, urlImage: '');
+    selectedPost = FbPost(titulo: fbpostTitulo, cuerpo: fbpostCuerpo, urlImage: fbpostUrlImage);
 
     return selectedPost;
+  }
+
+  void suscribeACambiosGPSUsuario(){
+    geolocAdmin.registrarCambiosLoc(posicionDelMovilCambio);
+  }
+
+  void posicionDelMovilCambio(Position? position){
+    usuario.geoloc=GeoPoint(position!.latitude, position.longitude);
+    fbAdmin.actualizarPerfilUsuario(usuario);
   }
 }
