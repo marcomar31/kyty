@@ -25,17 +25,17 @@ class FbUsuario {
       edad: data?['edad'],
       altura: data?['altura'],
       colorPelo: data?['colorPelo'],
-      geoloc:data?['geoloc'] != null ? data!['geoloc'] : GeoPoint(0, 0)
+      geoloc:data?['geoloc'] != null ? data!['geoloc'] : const GeoPoint(0, 0)
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      if (nombre != null) "nombre": nombre,
-      if (edad != null) "edad": edad,
-      if (altura != null) "altura": altura,
-      if (colorPelo != null) "colorPelo": colorPelo,
-      if (geoloc != null) "geoloc": geoloc,
+      "nombre": nombre,
+      "edad": edad,
+      "altura": altura,
+      "colorPelo": colorPelo,
+      "geoloc": geoloc,
     };
   }
 }

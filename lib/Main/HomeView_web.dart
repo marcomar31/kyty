@@ -23,13 +23,13 @@ class HomeView_web extends StatefulWidget {
 class _HomeView_webState extends State<HomeView_web> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final List<FbPost> posts = [];
-  final Map<String, FbPost> mapPosts = Map();
+  final Map<String, FbPost> mapPosts = {};
   bool blIsList = false;
   String eve = "Hola";
   late BottomMenu bottomMenu;
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
-    return PostListView(sText: posts[index].titulo,
+    return PostListView(post: posts[index],
         dFontSize: 20, iPosicion: index, onItemListClickedFun: onClickItemList,);
   }
 
@@ -42,7 +42,7 @@ class _HomeView_webState extends State<HomeView_web> {
   }
 
   Widget? creadorDeItemMatriz(BuildContext context, int index){
-    return PostGridView(post: posts, iPosicion: index, onItemListaClickedFunction: onClickItemList,);
+    return PostGridView(post: posts, iPosicion: index, onItemListaClickedFunction: onClickItemList, numPostsFila: 4,);
   }
 
   Widget? celdasOLista(bool isList) {
@@ -68,8 +68,7 @@ class _HomeView_webState extends State<HomeView_web> {
   }
 
   void datosDescargados(QuerySnapshot<FbPost> postsDescargados) {
-    print("NUMERO DE POSTS ACTUALIZADOS>>>> " +
-        postsDescargados.docChanges.length.toString());
+    print("NUMERO DE POSTS ACTUALIZADOS>>>> ${postsDescargados.docChanges.length}");
 
     for (int i = 0; i < postsDescargados.docChanges.length; i++) {
       FbPost temp = postsDescargados.docChanges[i].doc.data()!;
@@ -147,7 +146,7 @@ class _HomeView_webState extends State<HomeView_web> {
   void determinarTempLocal() async{
     Position position = await DataHolder().geolocAdmin.determinePosition();
     double valor=await DataHolder().httpAdmin.pedirTemperaturasEn(position.latitude,position.longitude);
-    print("LA TEMPERATURA EN EL SITIO DONDE ESTAS ES: ${valor}");
+    print("LA TEMPERATURA EN EL SITIO DONDE ESTAS ES: $valor");
   }
 
   @override

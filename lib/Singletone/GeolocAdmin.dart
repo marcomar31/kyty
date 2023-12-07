@@ -47,7 +47,7 @@ class GeolocAdmin{
   }
 
   void registrarCambiosLoc(Function(Position? position) funCambioPos){
-    final LocationSettings locationSettings = LocationSettings(
+    const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 0,
     );

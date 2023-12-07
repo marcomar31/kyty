@@ -13,7 +13,7 @@ class HttpAdmin{
           'longitude': lon.toString(),
           'hourly': 'temperature_2m',
         });
-    print("URL RESULTANTE: "+url.toString());
+    print("URL RESULTANTE: $url");
 
     var response = await http.get(url);
 

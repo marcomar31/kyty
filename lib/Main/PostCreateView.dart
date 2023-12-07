@@ -20,7 +20,7 @@ class _PostCreateViewState extends State<PostCreateView> {
 
   TextEditingController tecCuerpo = TextEditingController();
 
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
   File _imagePreview = File("");
 

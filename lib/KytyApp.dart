@@ -20,13 +20,13 @@ class KytyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DataHolder().initPlatformAdmin(context);
 
-    // TODO: implement build
     if (kIsWeb) {
       return MaterialApp(title: "KytY Miau Web!",
+        debugShowCheckedModeBanner: false,
         routes: {
           '/loginview': (context) => LoginView_web(),
           '/registerview': (context) => RegisterView(),
-          '/homeview': (context) => HomeView_web(),
+          '/homeview': (context) => const HomeView_web(),
           '/splashview': (context) => const SplashView(),
           '/perfilview': (content) => PerfilView(),
           '/postview':(context) => const PostView(),
@@ -36,6 +36,7 @@ class KytyApp extends StatelessWidget {
       );
     } else {
       return MaterialApp(title: "KytY Miau Mobile!",
+        debugShowCheckedModeBanner: false,
         routes: {
           '/loginview': (context) => const LoginView_mobile(),
           '/registerview': (context) => RegisterView(),

@@ -28,7 +28,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   late BottomMenu bottomMenu;
 
   Widget? creadorDeItemLista(BuildContext context, int index) {
-    return PostListView(sText: posts[index].titulo,
+    return PostListView(post: posts[index],
       dFontSize: 20, iPosicion: index, onItemListClickedFun: onClickItemList,);
   }
 
@@ -41,7 +41,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
   }
 
   Widget? creadorDeItemMatriz(BuildContext context, int index){
-    return PostGridView(post: posts, iPosicion: index, onItemListaClickedFunction: onClickItemList,);
+    return PostGridView(post: posts, iPosicion: index, onItemListaClickedFunction: onClickItemList, numPostsFila: 3,);
   }
 
   Widget? celdasOLista(bool isList) {
@@ -113,7 +113,7 @@ class _HomeView_mobileState extends State<HomeView_mobile> {
 
   void loadGeoLocator() async {
     Position pos = await DataHolder().geolocAdmin.determinePosition();
-    print("-----------------> Coordenadas: " + pos.toString());
+    print("-----------------> Coordenadas: $pos");
     //DataHolder().geolocAdmin.registrarCambiosLoc();
   }
 

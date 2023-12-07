@@ -25,9 +25,7 @@ class DataHolder {
   HttpAdmin httpAdmin = HttpAdmin();
   late FbUsuario usuario;
 
-  DataHolder._internal() {
-
-  }
+  DataHolder._internal();
 
   factory DataHolder(){
     return _dataHolder;
@@ -60,7 +58,7 @@ class DataHolder {
 
   Future<FbUsuario?> loadFbUsuario() async{
     String uid=FirebaseAuth.instance.currentUser!.uid;
-    print("UID DE DESCARGA loadFbUsuario------------->>>> ${uid}");
+    print("UID DE DESCARGA loadFbUsuario------------->>>> $uid");
     DocumentReference<FbUsuario> ref=db.collection("Usuarios")
         .doc(uid)
         .withConverter(fromFirestore: FbUsuario.fromFirestore,
